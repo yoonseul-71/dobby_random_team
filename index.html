@@ -32,9 +32,10 @@ button.active {
     color: white;
 }
 
+/* ⭐ 팀 섞기 버튼 (연하늘색) */
 .shuffle-btn {
-    background: linear-gradient(135deg, #4facfe, #00f2fe);
-    color: white;
+    background: #a8d8ff;
+    color: #fff;
     font-weight: bold;
 }
 
@@ -72,7 +73,7 @@ button.active {
     font-size: 15px;
 }
 
-/* 결과 박스 (입력칸 스타일 유지 + 배경만 추가) */
+/* 결과칸 (입력칸과 동일 + 배경) */
 .result-box {
     display: block;
     width: 150px;
@@ -80,14 +81,14 @@ button.active {
     padding: 12px;
     border-radius: 12px;
     font-size: 15px;
-    background: #f5f7ff;
+    background: #f1f3f9;
 }
 
 /* 색 */
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
 
-/* 중앙 버튼 영역 */
+/* 중앙 버튼 */
 .center-btn {
     margin-top: 20px;
 }
@@ -126,7 +127,6 @@ button.active {
 
         </div>
 
-        <!-- 팀 섞기 버튼 (여기로 이동) -->
         <div class="center-btn">
             <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
         </div>
@@ -141,7 +141,6 @@ button.active {
             <div id="resultB"></div>
         </div>
 
-        <!-- 복사 버튼 (아래로 이동) -->
         <div class="result-area">
             <button class="copy-btn" onclick="copyResult()">결과 복사</button>
         </div>
@@ -166,17 +165,22 @@ function setMode(n) {
 
 function createInputs() {
     let a = "", b = "";
+    let ra = "", rb = "";
 
     for (let i = 0; i < size; i++) {
         a += `<input class="box" id="a${i}">`;
         b += `<input class="box" id="b${i}">`;
+
+        // ⭐ 결과칸도 미리 생성 (빈 상태)
+        ra += `<div class="result-box"></div>`;
+        rb += `<div class="result-box"></div>`;
     }
 
     document.getElementById("teamA").innerHTML = a;
     document.getElementById("teamB").innerHTML = b;
 
-    document.getElementById("resultA").innerHTML = "";
-    document.getElementById("resultB").innerHTML = "";
+    document.getElementById("resultA").innerHTML = ra;
+    document.getElementById("resultB").innerHTML = rb;
 }
 
 function shuffle(arr) {
