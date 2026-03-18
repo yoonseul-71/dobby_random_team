@@ -16,7 +16,6 @@ body {
 
 h1 { font-size: 34px; }
 
-/* 버튼 */
 button {
     margin: 6px;
     padding: 11px 20px;
@@ -32,20 +31,17 @@ button.active {
     color: white;
 }
 
-/* 팀 섞기 버튼 */
 .shuffle-btn {
     background: #4da6ff;
     color: white;
     font-weight: bold;
 }
 
-/* 복사 */
 .copy-btn {
     background: #333;
     color: white;
 }
 
-/* ⭐ 기존 구조 그대로 유지 */
 .grid {
     display: grid;
     grid-template-columns: 160px 160px 80px 160px 160px;
@@ -54,13 +50,11 @@ button.active {
     margin-top: 40px;
 }
 
-/* 제목 */
 .title {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-/* 박스 */
 .box, .result-box {
     width: 150px;
     padding: 12px;
@@ -69,19 +63,14 @@ button.active {
     margin: 4px 0;
 }
 
-.box {
-    border: 1px solid #ddd;
-}
+.box { border: 1px solid #ddd; }
 
-.result-box {
-    background: #f1f3f9;
-}
+.result-box { background: #f1f3f9; }
 
-/* 색 */
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
 
-/* ⭐ 버튼 위치용 */
+/* ⭐ 버튼 정확한 중앙 정렬 */
 .btn-row {
     display: grid;
     grid-template-columns: 160px 160px 80px 160px 160px;
@@ -100,7 +89,6 @@ button.active {
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
 </div>
 
-<!-- 제목 -->
 <div class="grid" id="header">
     <div class="title blue">1팀</div>
     <div class="title red">2팀</div>
@@ -109,20 +97,25 @@ button.active {
     <div class="title red">2팀</div>
 </div>
 
-<!-- 데이터 -->
 <div class="grid" id="grid"></div>
 
-<!-- ⭐ 버튼 위치만 변경 -->
+<!-- ⭐ 진짜 핵심 -->
 <div class="btn-row">
-    <div style="grid-column: 1 / span 2; text-align:center;">
+
+    <!-- 왼쪽 중앙 (2번째 컬럼) -->
+    <div></div>
+    <div style="text-align:center;">
         <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
     </div>
 
     <div></div>
 
-    <div style="grid-column: 4 / span 2; text-align:center;">
+    <!-- 오른쪽 중앙 (5번째 컬럼) -->
+    <div></div>
+    <div style="text-align:center;">
         <button class="copy-btn" onclick="copyResult()">결과 복사</button>
     </div>
+
 </div>
 
 <script>
