@@ -16,7 +16,6 @@ body {
 
 h1 { font-size: 34px; }
 
-/* 버튼 */
 button {
     margin: 6px;
     padding: 11px 20px;
@@ -27,35 +26,31 @@ button {
     font-size: 15px;
 }
 
-/* 선택 버튼 */
 button.active {
     background: #333;
     color: white;
 }
 
-/* 팀 섞기 버튼 (진한 파랑) */
+/* 버튼 색 */
 .shuffle-btn {
     background: #1f5eff;
     color: white;
     font-weight: bold;
 }
 
-/* 결과 복사 버튼 (회색) */
 .copy-btn {
     background: #888;
     color: white;
 }
 
-/* 상단 버튼 줄 */
+/* 상단 버튼 */
 .top-bar {
     display: flex;
     justify-content: center;
-    align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
 }
 
-/* 기존 구조 그대로 */
+/* 기존 구조 유지 */
 .grid {
     display: grid;
     grid-template-columns: 160px 160px 80px 160px 160px;
@@ -77,9 +72,20 @@ button.active {
     margin: 4px 0;
 }
 
-.box { border: 1px solid #ddd; }
+.box {
+    border: 1px solid #ddd;
+}
 
-.result-box { background: #f1f3f9; }
+/* ⭐ 팀별 결과 색 */
+.result-blue {
+    background: #e3f0ff;
+    color: black;
+}
+
+.result-red {
+    background: #ffe4ec;
+    color: black;
+}
 
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
@@ -90,7 +96,6 @@ button.active {
 
 <h1>랜덤 팀 섞기</h1>
 
-<!-- ⭐ 상단 버튼 모음 -->
 <div class="top-bar">
     <button id="btn5" onclick="setMode(5)">5 vs 5</button>
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
@@ -130,8 +135,8 @@ function createGrid() {
         html += `<input class="box" id="a${i}">`;
         html += `<input class="box" id="b${i}">`;
         html += `<div></div>`;
-        html += `<div class="result-box" id="ra${i}"></div>`;
-        html += `<div class="result-box" id="rb${i}"></div>`;
+        html += `<div class="result-box result-blue" id="ra${i}"></div>`;
+        html += `<div class="result-box result-red" id="rb${i}"></div>`;
     }
 
     document.getElementById("grid").innerHTML = html;
@@ -167,8 +172,8 @@ function shuffleTeams() {
     finalText = "";
 
     for (let i = 0; i < size; i++) {
-        document.getElementById(`ra${i}`).innerHTML = `<span class="blue">${teamA[i]}</span>`;
-        document.getElementById(`rb${i}`).innerHTML = `<span class="red">${teamB[i]}</span>`;
+        document.getElementById(`ra${i}`).innerText = teamA[i];
+        document.getElementById(`rb${i}`).innerText = teamB[i];
 
         finalText += teamA[i] + "    " + teamB[i] + "\n";
     }
