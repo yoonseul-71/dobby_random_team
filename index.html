@@ -14,9 +14,7 @@ body {
     padding: 30px;
 }
 
-h1 {
-    font-size: 34px;
-}
+h1 { font-size: 34px; }
 
 /* 버튼 */
 button {
@@ -34,15 +32,10 @@ button.active {
     color: white;
 }
 
-/* ⭐ 메인 버튼 (팀 섞기) */
 .shuffle-btn {
     background: linear-gradient(135deg, #4facfe, #00f2fe);
     color: white;
     font-weight: bold;
-}
-
-.shuffle-btn:hover {
-    opacity: 0.9;
 }
 
 .copy-btn {
@@ -50,16 +43,15 @@ button.active {
     color: white;
 }
 
-/* 전체 레이아웃 */
+/* 레이아웃 */
 .main {
     display: flex;
     justify-content: center;
     align-items: flex-start;
     gap: 100px;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
-/* 입력 영역 */
 .input-area {
     display: flex;
     gap: 50px;
@@ -69,6 +61,7 @@ button.active {
     text-align: center;
 }
 
+/* 입력칸 */
 .box {
     display: block;
     width: 150px;
@@ -79,28 +72,29 @@ button.active {
     font-size: 15px;
 }
 
+/* 결과 박스 (입력칸 스타일 유지 + 배경만 추가) */
+.result-box {
+    display: block;
+    width: 150px;
+    margin: 6px auto;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 15px;
+    background: #f5f7ff;
+}
+
 /* 색 */
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
 
-/* 결과 */
-.result-box {
-    background: #f5f7ff;
-    padding: 30px 35px;
-    border-radius: 18px;
-    min-width: 260px;
+/* 중앙 버튼 영역 */
+.center-btn {
+    margin-top: 20px;
 }
 
-.result-box h3 {
-    margin-bottom: 18px;
-    font-size: 20px;
-}
-
-.row {
-    display: flex;
-    justify-content: space-between;
-    font-size: 19px;
-    margin: 5px 0;
+/* 결과 영역 */
+.result-area {
+    margin-top: 20px;
 }
 </style>
 </head>
@@ -112,31 +106,45 @@ button.active {
 <div>
     <button id="btn5" onclick="setMode(5)">5 vs 5</button>
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
-    <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
-    <button class="copy-btn" onclick="copyResult()">결과 복사</button>
 </div>
 
 <div class="main">
 
     <!-- 입력 -->
-    <div class="input-area">
+    <div>
+        <div class="input-area">
 
-        <div class="section">
-            <h3 class="blue">1팀</h3>
-            <div id="teamA"></div>
+            <div class="section">
+                <h3 class="blue">1팀</h3>
+                <div id="teamA"></div>
+            </div>
+
+            <div class="section">
+                <h3 class="red">2팀</h3>
+                <div id="teamB"></div>
+            </div>
+
         </div>
 
-        <div class="section">
-            <h3 class="red">2팀</h3>
-            <div id="teamB"></div>
+        <!-- 팀 섞기 버튼 (여기로 이동) -->
+        <div class="center-btn">
+            <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
         </div>
-
     </div>
 
     <!-- 결과 -->
-    <div class="result-box">
+    <div>
         <h3>섞인 팀</h3>
-        <div id="result"></div>
+
+        <div class="input-area">
+            <div id="resultA"></div>
+            <div id="resultB"></div>
+        </div>
+
+        <!-- 복사 버튼 (아래로 이동) -->
+        <div class="result-area">
+            <button class="copy-btn" onclick="copyResult()">결과 복사</button>
+        </div>
     </div>
 
 </div>
@@ -167,7 +175,8 @@ function createInputs() {
     document.getElementById("teamA").innerHTML = a;
     document.getElementById("teamB").innerHTML = b;
 
-    document.getElementById("result").innerHTML = "";
+    document.getElementById("resultA").innerHTML = "";
+    document.getElementById("resultB").innerHTML = "";
 }
 
 function shuffle(arr) {
@@ -197,20 +206,18 @@ function shuffleTeams() {
     let teamA = names.slice(0, size);
     let teamB = names.slice(size);
 
-    let html = "";
+    let htmlA = "", htmlB = "";
     finalText = "";
 
     for (let i = 0; i < size; i++) {
-        html += `
-        <div class="row">
-            <span class="blue">${teamA[i]}</span>
-            <span class="red">${teamB[i]}</span>
-        </div>`;
+        htmlA += `<div class="result-box blue">${teamA[i]}</div>`;
+        htmlB += `<div class="result-box red">${teamB[i]}</div>`;
 
         finalText += teamA[i] + "    " + teamB[i] + "\n";
     }
 
-    document.getElementById("result").innerHTML = html;
+    document.getElementById("resultA").innerHTML = htmlA;
+    document.getElementById("resultB").innerHTML = htmlB;
 }
 
 function copyResult() {
