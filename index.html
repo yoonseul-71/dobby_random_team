@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>dobby_random_team</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #ffffff;
+    color: #333;
+    text-align: center;
+    padding: 40px;
+}
+
+h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+textarea {
+    width: 320px;
+    height: 160px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    resize: none;
+}
+
+button {
+    margin: 8px;
+    padding: 10px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #f2f2f2;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+button:hover {
+    background: #e0e0e0;
+}
+
+.copy-btn {
+    background: #333;
+    color: white;
+}
+
+.copy-btn:hover {
+    background: #555;
+}
+
+.container {
+    margin-top: 20px;
+    display: inline-block;
+    text-align: left;
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    width: 220px;
+    font-size: 16px;
+    margin: 3px 0;
+}
+
+.blue {
+    color: #2a7cff;
+    font-weight: bold;
+}
+
+.red {
+    color: #ff4d4d;
+    font-weight: bold;
+}
+
+.original {
+    margin-bottom: 15px;
+    font-size: 13px;
+    color: #777;
+    white-space: pre;
+}
+</style>
+</head>
+<body>
+
+<h1>dobby_random_team</h1>
+
+<p>이름을 한 줄씩 입력하세요</p>
+
+<textarea id="names"></textarea><br>
+
+<button onclick="makeTeams(5)">5 vs 5</button>
+<button onclick="makeTeams(6)">6 vs 6</button>
+<button class="copy-btn" onclick="copyResult()">복사</button>
+
+<div class="container">
+    <div class="original" id="original"></div>
+    <div id="teams"></div>
+</div>
+
+<script>
+let finalText = "";
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+function makeTeams(size) {
+    let names = document.getElementById("names").value
+        .split("\n")
+        .map(n => n.trim())
+        .filter(n => n !== "");
+
+    if (names.length !== size * 2) {
+        alert(size*2 + "명 입력해야 합니다!");
+        return;
+    }
+
+    let original = [...names];
+    shuffle(names);
+
+    let teamA = names.slice(0, size);
+    let teamB = names.slice(size);
+
+    // 입력 순서 표시
+    document.getElementById("original").textContent =
+        "입력 순서\n" + original.join("\n");
+
+    let html = "";
+    finalText = "";
+
+    for (let i = 0; i < size; i++) {
+        html += `
+        <div class="row">
+            <span class="blue">${teamA[i] || ""}</span>
+            <span class="red">${teamB[i] || ""}</span>
+        </div>`;
+
+        finalText += (teamA[i] || "") + "    " + (teamB[i] || "") + "\n";
+    }
+
+    document.getElementById("teams").innerHTML = html;
+}
+
+function copyResult() {
+    if (!finalText) {
+        alert("먼저 팀을 생성하세요!");
+        return;
+    }
+
+    navigator.clipboard.writeText(finalText);
+    alert("복사 완료!");
+}
+</script>
+
+</body>
+</html>
