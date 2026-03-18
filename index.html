@@ -16,6 +16,7 @@ body {
 
 h1 { font-size: 34px; }
 
+/* 버튼 */
 button {
     margin: 6px;
     padding: 11px 20px;
@@ -26,22 +27,35 @@ button {
     font-size: 15px;
 }
 
+/* 선택 버튼 */
 button.active {
     background: #333;
     color: white;
 }
 
+/* 팀 섞기 버튼 (진한 파랑) */
 .shuffle-btn {
-    background: #4da6ff;
+    background: #1f5eff;
     color: white;
     font-weight: bold;
 }
 
+/* 결과 복사 버튼 (회색) */
 .copy-btn {
-    background: #333;
+    background: #888;
     color: white;
 }
 
+/* 상단 버튼 줄 */
+.top-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+/* 기존 구조 그대로 */
 .grid {
     display: grid;
     grid-template-columns: 160px 160px 80px 160px 160px;
@@ -69,14 +83,6 @@ button.active {
 
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
-
-/* ⭐ 핵심: 중앙 정확히 맞추기 */
-.btn-row {
-    display: grid;
-    grid-template-columns: 160px 160px 80px 160px 160px;
-    justify-content: center;
-    margin-top: 20px;
-}
 </style>
 </head>
 
@@ -84,9 +90,13 @@ button.active {
 
 <h1>랜덤 팀 섞기</h1>
 
-<div>
+<!-- ⭐ 상단 버튼 모음 -->
+<div class="top-bar">
     <button id="btn5" onclick="setMode(5)">5 vs 5</button>
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
+
+    <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
+    <button class="copy-btn" onclick="copyResult()">결과 복사</button>
 </div>
 
 <div class="grid" id="header">
@@ -98,24 +108,6 @@ button.active {
 </div>
 
 <div class="grid" id="grid"></div>
-
-<!-- ⭐ 여기만 진짜 수정 -->
-<div class="btn-row">
-
-    <!-- 왼쪽 (1~2열 span → 중앙 정렬) -->
-    <div style="grid-column: 1 / span 2; display:flex; justify-content:center;">
-        <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
-    </div>
-
-    <!-- 가운데 공백 -->
-    <div></div>
-
-    <!-- 오른쪽 (4~5열 span → 중앙 정렬) -->
-    <div style="grid-column: 4 / span 2; display:flex; justify-content:center;">
-        <button class="copy-btn" onclick="copyResult()">결과 복사</button>
-    </div>
-
-</div>
 
 <script>
 let size = 5;
