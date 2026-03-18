@@ -32,32 +32,42 @@ button.active {
     color: white;
 }
 
-/* ⭐ 팀 섞기 버튼 (밝은 자두색) */
+/* ⭐ 팀 섞기 버튼 (깔끔한 블루) */
 .shuffle-btn {
-    background: #d68fd6;
+    background: #4da6ff;
     color: white;
     font-weight: bold;
 }
 
+/* 복사 버튼 */
 .copy-btn {
     background: #333;
     color: white;
 }
 
-/* 레이아웃 */
+/* 전체 구조 */
 .main {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 100px;
+    gap: 120px;
     margin-top: 40px;
 }
 
-.input-area {
+/* 좌측 (입력) / 우측(결과) */
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 팀 2개 가로 정렬 */
+.team-row {
     display: flex;
     gap: 50px;
 }
 
+/* 팀 하나 */
 .section {
     text-align: center;
 }
@@ -90,11 +100,11 @@ button.active {
 
 /* 버튼 위치 */
 .center-btn {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
-.result-area {
-    margin-top: 20px;
+.result-title {
+    margin-bottom: 10px;
 }
 </style>
 </head>
@@ -111,9 +121,9 @@ button.active {
 <div class="main">
 
     <!-- 입력 영역 -->
-    <div>
-        <div class="input-area">
+    <div class="block">
 
+        <div class="team-row">
             <div class="section">
                 <h3 class="blue">1팀</h3>
                 <div id="teamA"></div>
@@ -123,20 +133,20 @@ button.active {
                 <h3 class="red">2팀</h3>
                 <div id="teamB"></div>
             </div>
-
         </div>
 
         <div class="center-btn">
             <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
         </div>
+
     </div>
 
     <!-- 결과 영역 -->
-    <div>
-        <h3>섞인 팀</h3>
+    <div class="block">
 
-        <div class="input-area">
+        <h3 class="result-title">섞인 팀</h3>
 
+        <div class="team-row">
             <div class="section">
                 <h3 class="blue">1팀</h3>
                 <div id="resultA"></div>
@@ -146,12 +156,12 @@ button.active {
                 <h3 class="red">2팀</h3>
                 <div id="resultB"></div>
             </div>
-
         </div>
 
-        <div class="result-area">
+        <div class="center-btn">
             <button class="copy-btn" onclick="copyResult()">결과 복사</button>
         </div>
+
     </div>
 
 </div>
@@ -179,7 +189,6 @@ function createInputs() {
         a += `<input class="box" id="a${i}">`;
         b += `<input class="box" id="b${i}">`;
 
-        // 결과칸 초기 상태 (빈 박스)
         ra += `<div class="result-box"></div>`;
         rb += `<div class="result-box"></div>`;
     }
