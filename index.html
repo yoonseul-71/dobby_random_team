@@ -3,22 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <title>dobby_random_team</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Square+Round&display=swap" rel="stylesheet">
+
 <style>
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Nanum Square Round', Arial, sans-serif;
     background: #ffffff;
     text-align: center;
     padding: 30px;
 }
 
+h1 {
+    font-size: 34px;
+}
+
 /* 버튼 */
 button {
-    margin: 5px;
-    padding: 10px 18px;
+    margin: 6px;
+    padding: 11px 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background: #f2f2f2;
     cursor: pointer;
+    font-size: 15px;
 }
 
 button.active {
@@ -26,31 +34,49 @@ button.active {
     color: white;
 }
 
+/* ⭐ 메인 버튼 (팀 섞기) */
+.shuffle-btn {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: white;
+    font-weight: bold;
+}
+
+.shuffle-btn:hover {
+    opacity: 0.9;
+}
+
 .copy-btn {
     background: #333;
     color: white;
 }
 
-/* 영역 */
-.container {
+/* 전체 레이아웃 */
+.main {
     display: flex;
     justify-content: center;
-    gap: 60px;
-    margin-top: 20px;
+    align-items: flex-start;
+    gap: 100px;
+    margin-top: 50px;
+}
+
+/* 입력 영역 */
+.input-area {
+    display: flex;
+    gap: 50px;
 }
 
 .section {
     text-align: center;
 }
 
-/* 입력칸 */
 .box {
     display: block;
-    width: 120px;
-    margin: 4px auto;
-    padding: 8px;
+    width: 150px;
+    margin: 6px auto;
+    padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 12px;
+    font-size: 15px;
 }
 
 /* 색 */
@@ -58,63 +84,59 @@ button.active {
 .red { color: #ff4d4d; font-weight: bold; }
 
 /* 결과 */
-.compare {
-    display: flex;
-    justify-content: center;
-    gap: 80px;
-    margin-top: 30px;
+.result-box {
+    background: #f5f7ff;
+    padding: 30px 35px;
+    border-radius: 18px;
+    min-width: 260px;
 }
 
-.column {
-    text-align: center;
+.result-box h3 {
+    margin-bottom: 18px;
+    font-size: 20px;
 }
 
 .row {
     display: flex;
     justify-content: space-between;
-    width: 180px;
-    margin: 2px auto;
+    font-size: 19px;
+    margin: 5px 0;
 }
 </style>
 </head>
+
 <body>
 
 <h1>랜덤 팀 섞기</h1>
 
-<!-- 버튼 -->
 <div>
     <button id="btn5" onclick="setMode(5)">5 vs 5</button>
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
-    <button onclick="shuffleTeams()">팀 섞기</button>
+    <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
     <button class="copy-btn" onclick="copyResult()">결과 복사</button>
 </div>
 
-<!-- 입력 -->
-<div class="container">
-    <div class="section">
-        <h3 class="blue">1팀</h3>
-        <div id="teamA"></div>
+<div class="main">
+
+    <!-- 입력 -->
+    <div class="input-area">
+
+        <div class="section">
+            <h3 class="blue">1팀</h3>
+            <div id="teamA"></div>
+        </div>
+
+        <div class="section">
+            <h3 class="red">2팀</h3>
+            <div id="teamB"></div>
+        </div>
+
     </div>
 
-    <div class="section">
-        <h3 class="red">2팀</h3>
-        <div id="teamB"></div>
-    </div>
-</div>
-
-<!-- 결과 비교 -->
-<div class="compare">
-
-    <!-- 섞기 전 -->
-    <div class="column">
-        <h3>섞기 전</h3>
-        <div id="before"></div>
-    </div>
-
-    <!-- 섞기 후 -->
-    <div class="column">
-        <h3>섞기 후</h3>
-        <div id="after"></div>
+    <!-- 결과 -->
+    <div class="result-box">
+        <h3>섞인 팀</h3>
+        <div id="result"></div>
     </div>
 
 </div>
@@ -123,7 +145,6 @@ button.active {
 let size = 5;
 let finalText = "";
 
-/* 모드 선택 */
 function setMode(n) {
     size = n;
 
@@ -135,7 +156,6 @@ function setMode(n) {
     createInputs();
 }
 
-/* 입력 생성 */
 function createInputs() {
     let a = "", b = "";
 
@@ -147,11 +167,9 @@ function createInputs() {
     document.getElementById("teamA").innerHTML = a;
     document.getElementById("teamB").innerHTML = b;
 
-    document.getElementById("before").innerHTML = "";
-    document.getElementById("after").innerHTML = "";
+    document.getElementById("result").innerHTML = "";
 }
 
-/* 셔플 */
 function shuffle(arr) {
     for (let i = arr.length - 1; i > 0; i--) {
         let j = Math.floor(Math.random() * (i + 1));
@@ -159,10 +177,8 @@ function shuffle(arr) {
     }
 }
 
-/* 팀 섞기 */
 function shuffleTeams() {
     let names = [];
-    let beforeHTML = "";
 
     for (let i = 0; i < size; i++) {
         let a = document.getElementById(`a${i}`).value.trim();
@@ -174,27 +190,18 @@ function shuffleTeams() {
         }
 
         names.push(a, b);
-
-        // 섞기 전 표시
-        beforeHTML += `
-        <div class="row">
-            <span class="blue">${a}</span>
-            <span class="red">${b}</span>
-        </div>`;
     }
-
-    document.getElementById("before").innerHTML = beforeHTML;
 
     shuffle(names);
 
     let teamA = names.slice(0, size);
     let teamB = names.slice(size);
 
-    let afterHTML = "";
+    let html = "";
     finalText = "";
 
     for (let i = 0; i < size; i++) {
-        afterHTML += `
+        html += `
         <div class="row">
             <span class="blue">${teamA[i]}</span>
             <span class="red">${teamB[i]}</span>
@@ -203,10 +210,9 @@ function shuffleTeams() {
         finalText += teamA[i] + "    " + teamB[i] + "\n";
     }
 
-    document.getElementById("after").innerHTML = afterHTML;
+    document.getElementById("result").innerHTML = html;
 }
 
-/* 복사 */
 function copyResult() {
     if (!finalText) {
         alert("먼저 섞기!");
@@ -217,7 +223,6 @@ function copyResult() {
     alert("복사 완료!");
 }
 
-/* 초기값 */
 setMode(5);
 </script>
 
