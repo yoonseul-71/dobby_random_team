@@ -7,20 +7,11 @@
 body {
     font-family: Arial, sans-serif;
     background: #ffffff;
-    color: #333;
     text-align: center;
     padding: 30px;
 }
 
-h1 {
-    font-size: 30px;
-    margin-bottom: 10px;
-}
-
-.controls {
-    margin-bottom: 20px;
-}
-
+/* 버튼 */
 button {
     margin: 5px;
     padding: 10px 18px;
@@ -30,8 +21,9 @@ button {
     cursor: pointer;
 }
 
-button:hover {
-    background: #e0e0e0;
+button.active {
+    background: #333;
+    color: white;
 }
 
 .copy-btn {
@@ -39,6 +31,7 @@ button:hover {
     color: white;
 }
 
+/* 영역 */
 .container {
     display: flex;
     justify-content: center;
@@ -50,38 +43,37 @@ button:hover {
     text-align: center;
 }
 
+/* 입력칸 */
 .box {
+    display: block;
     width: 120px;
+    margin: 4px auto;
     padding: 8px;
-    margin: 4px;
     border: 1px solid #ddd;
     border-radius: 8px;
 }
 
-.blue {
-    color: #2a7cff;
-    font-weight: bold;
+/* 색 */
+.blue { color: #2a7cff; font-weight: bold; }
+.red { color: #ff4d4d; font-weight: bold; }
+
+/* 결과 */
+.compare {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+    margin-top: 30px;
 }
 
-.red {
-    color: #ff4d4d;
-    font-weight: bold;
+.column {
+    text-align: center;
 }
 
-.result-row {
+.row {
     display: flex;
     justify-content: space-between;
-    width: 220px;
-    margin: 3px auto;
-}
-
-.result {
-    margin-top: 20px;
-    white-space: pre;
-    background: #fafafa;
-    padding: 15px;
-    border-radius: 10px;
-    display: inline-block;
+    width: 180px;
+    margin: 2px auto;
 }
 </style>
 </head>
@@ -89,99 +81,135 @@ button:hover {
 
 <h1>랜덤 팀 섞기</h1>
 
-<div class="controls">
-    <button onclick="createInputs(5)">5 vs 5</button>
-    <button onclick="createInputs(6)">6 vs 6</button>
+<!-- 버튼 -->
+<div>
+    <button id="btn5" onclick="setMode(5)">5 vs 5</button>
+    <button id="btn6" onclick="setMode(6)">6 vs 6</button>
     <button onclick="shuffleTeams()">팀 섞기</button>
-    <button class="copy-btn" onclick="copyResult()">섞인팀 복사</button>
+    <button class="copy-btn" onclick="copyResult()">결과 복사</button>
 </div>
 
+<!-- 입력 -->
 <div class="container">
-
-    <!-- 입력 영역 -->
     <div class="section">
-        <h3 class="blue">블루팀 입력</h3>
-        <div id="teamAInputs"></div>
+        <h3 class="blue">1팀</h3>
+        <div id="teamA"></div>
     </div>
 
     <div class="section">
-        <h3 class="red">레드팀 입력</h3>
-        <div id="teamBInputs"></div>
+        <h3 class="red">2팀</h3>
+        <div id="teamB"></div>
+    </div>
+</div>
+
+<!-- 결과 비교 -->
+<div class="compare">
+
+    <!-- 섞기 전 -->
+    <div class="column">
+        <h3>섞기 전</h3>
+        <div id="before"></div>
+    </div>
+
+    <!-- 섞기 후 -->
+    <div class="column">
+        <h3>섞기 후</h3>
+        <div id="after"></div>
     </div>
 
 </div>
-
-<!-- 결과 영역 -->
-<div id="result" class="result"></div>
 
 <script>
 let size = 5;
 let finalText = "";
 
-function createInputs(n) {
+/* 모드 선택 */
+function setMode(n) {
     size = n;
-    let a = "";
-    let b = "";
 
-    for (let i = 0; i < n; i++) {
-        a += `<input class="box" id="a${i}" placeholder="이름">`;
-        b += `<input class="box" id="b${i}" placeholder="이름">`;
-    }
+    document.getElementById("btn5").classList.remove("active");
+    document.getElementById("btn6").classList.remove("active");
 
-    document.getElementById("teamAInputs").innerHTML = a;
-    document.getElementById("teamBInputs").innerHTML = b;
+    document.getElementById("btn" + n).classList.add("active");
 
-    document.getElementById("result").innerHTML = "";
+    createInputs();
 }
 
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+/* 입력 생성 */
+function createInputs() {
+    let a = "", b = "";
+
+    for (let i = 0; i < size; i++) {
+        a += `<input class="box" id="a${i}">`;
+        b += `<input class="box" id="b${i}">`;
+    }
+
+    document.getElementById("teamA").innerHTML = a;
+    document.getElementById("teamB").innerHTML = b;
+
+    document.getElementById("before").innerHTML = "";
+    document.getElementById("after").innerHTML = "";
+}
+
+/* 셔플 */
+function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
     }
 }
 
+/* 팀 섞기 */
 function shuffleTeams() {
     let names = [];
+    let beforeHTML = "";
 
     for (let i = 0; i < size; i++) {
         let a = document.getElementById(`a${i}`).value.trim();
         let b = document.getElementById(`b${i}`).value.trim();
 
         if (!a || !b) {
-            alert("모든 칸을 입력하세요!");
+            alert("모든 칸 입력!");
             return;
         }
 
-        names.push(a);
-        names.push(b);
+        names.push(a, b);
+
+        // 섞기 전 표시
+        beforeHTML += `
+        <div class="row">
+            <span class="blue">${a}</span>
+            <span class="red">${b}</span>
+        </div>`;
     }
+
+    document.getElementById("before").innerHTML = beforeHTML;
 
     shuffle(names);
 
     let teamA = names.slice(0, size);
     let teamB = names.slice(size);
 
-    let html = "";
+    let afterHTML = "";
     finalText = "";
 
     for (let i = 0; i < size; i++) {
-        html += `
-        <div class="result-row">
+        afterHTML += `
+        <div class="row">
             <span class="blue">${teamA[i]}</span>
             <span class="red">${teamB[i]}</span>
-        </div>
-        `;
+        </div>`;
 
         finalText += teamA[i] + "    " + teamB[i] + "\n";
     }
 
-    document.getElementById("result").innerHTML = html;
+    document.getElementById("after").innerHTML = afterHTML;
 }
 
+/* 복사 */
 function copyResult() {
     if (!finalText) {
-        alert("먼저 팀을 섞으세요!");
+        alert("먼저 섞기!");
         return;
     }
 
@@ -189,8 +217,8 @@ function copyResult() {
     alert("복사 완료!");
 }
 
-// 초기 기본 5vs5 생성
-createInputs(5);
+/* 초기값 */
+setMode(5);
 </script>
 
 </body>
