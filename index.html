@@ -43,7 +43,6 @@ button.active {
     color: white;
 }
 
-/* ⭐ 초기화 버튼 */
 .reset-btn {
     background: #444;
     color: white;
@@ -103,6 +102,7 @@ button.active {
 <h1>랜덤 팀 섞기</h1>
 
 <div class="top-bar">
+    <button id="btn4" onclick="setMode(4)">4 vs 4</button>
     <button id="btn5" onclick="setMode(5)">5 vs 5</button>
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
 
@@ -128,8 +128,10 @@ let finalText = "";
 function setMode(n) {
     size = n;
 
+    document.getElementById("btn4").classList.remove("active");
     document.getElementById("btn5").classList.remove("active");
     document.getElementById("btn6").classList.remove("active");
+
     document.getElementById("btn" + n).classList.add("active");
 
     createGrid();
@@ -176,7 +178,6 @@ function shuffleTeams() {
     }
 }
 
-/* 복사 */
 function copyResult() {
     if (!finalText) {
         alert("먼저 섞기!");
@@ -187,7 +188,6 @@ function copyResult() {
     alert("복사 완료!");
 }
 
-/* ⭐ 초기화 기능 */
 function resetAll() {
     finalText = "";
 
@@ -199,6 +199,7 @@ function resetAll() {
     }
 }
 
+/* 기본값 */
 setMode(5);
 </script>
 
