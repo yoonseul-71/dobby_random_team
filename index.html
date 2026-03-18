@@ -45,7 +45,7 @@ button.active {
     color: white;
 }
 
-/* ⭐ 핵심: 가운데 공백 포함 5열 구조 */
+/* ⭐ 기존 구조 그대로 유지 */
 .grid {
     display: grid;
     grid-template-columns: 160px 160px 80px 160px 160px;
@@ -81,9 +81,12 @@ button.active {
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
 
-/* 버튼 위치 */
-.btn-area {
-    margin-top: 20px;
+/* ⭐ 버튼 위치용 */
+.btn-row {
+    display: grid;
+    grid-template-columns: 160px 160px 80px 160px 160px;
+    justify-content: center;
+    margin-top: 10px;
 }
 </style>
 </head>
@@ -97,21 +100,29 @@ button.active {
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
 </div>
 
-<!-- 제목 라인 -->
+<!-- 제목 -->
 <div class="grid" id="header">
     <div class="title blue">1팀</div>
     <div class="title red">2팀</div>
-    <div></div> <!-- ⭐ 가운데 공백 -->
+    <div></div>
     <div class="title blue">1팀</div>
     <div class="title red">2팀</div>
 </div>
 
-<!-- 데이터 영역 -->
+<!-- 데이터 -->
 <div class="grid" id="grid"></div>
 
-<div class="btn-area">
-    <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
-    <button class="copy-btn" onclick="copyResult()">결과 복사</button>
+<!-- ⭐ 버튼 위치만 변경 -->
+<div class="btn-row">
+    <div style="grid-column: 1 / span 2; text-align:center;">
+        <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
+    </div>
+
+    <div></div>
+
+    <div style="grid-column: 4 / span 2; text-align:center;">
+        <button class="copy-btn" onclick="copyResult()">결과 복사</button>
+    </div>
 </div>
 
 <script>
@@ -134,7 +145,7 @@ function createGrid() {
     for (let i = 0; i < size; i++) {
         html += `<input class="box" id="a${i}">`;
         html += `<input class="box" id="b${i}">`;
-        html += `<div></div>`; // ⭐ 가운데 공백
+        html += `<div></div>`;
         html += `<div class="result-box" id="ra${i}"></div>`;
         html += `<div class="result-box" id="rb${i}"></div>`;
     }
