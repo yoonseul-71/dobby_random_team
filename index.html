@@ -32,6 +32,7 @@ button.active {
     color: white;
 }
 
+/* 버튼 색 */
 .shuffle-btn {
     background: #4da6ff;
     color: white;
@@ -43,23 +44,30 @@ button.active {
     color: white;
 }
 
-/* ⭐ 핵심: 4팀 가로 + 가운데만 간격 */
-.team-row {
+/* ⭐ 핵심 구조 */
+.main {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: 50px;
+    gap: 80px; /* ← 입력 vs 결과 큰 간격 */
     margin-top: 40px;
 }
 
-/* ⭐ 가운데 띄우기 */
-.middle-gap {
-    width: 80px;
+/* 입력 / 결과 각각 블록 */
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* 팀 */
-.section {
-    text-align: center;
+/* 팀 두 개 */
+.team-row {
+    display: flex;
+    gap: 40px;
+}
+
+/* ⭐ 가운데 여백 핵심 */
+.team-row .section:nth-child(2) {
+    margin-right: 40px; /* ← 여기만 띄움 (핵심) */
 }
 
 /* 박스 */
@@ -83,7 +91,7 @@ button.active {
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
 
-/* 버튼 */
+/* 버튼 위치 */
 .btn-area {
     margin-top: 20px;
 }
@@ -99,42 +107,54 @@ button.active {
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
 </div>
 
-<!-- ⭐ 입력 + 결과 한 줄 구조 -->
-<div class="team-row">
+<div class="main">
 
-    <!-- 입력 1팀 -->
-    <div class="section">
-        <h3 class="blue">1팀</h3>
-        <div id="teamA"></div>
+    <!-- 입력 -->
+    <div class="block">
+
+        <div class="team-row">
+            <div class="section">
+                <h3 class="blue">1팀</h3>
+                <div id="teamA"></div>
+            </div>
+
+            <div class="section">
+                <h3 class="red">2팀</h3>
+                <div id="teamB"></div>
+            </div>
+        </div>
+
+        <!-- ⭐ 입력 아래 중앙 -->
+        <div class="btn-area">
+            <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
+        </div>
+
     </div>
 
-    <!-- 입력 2팀 -->
-    <div class="section">
-        <h3 class="red">2팀</h3>
-        <div id="teamB"></div>
+    <!-- 결과 -->
+    <div class="block">
+
+        <h3>섞인 팀</h3>
+
+        <div class="team-row">
+            <div class="section">
+                <h3 class="blue">1팀</h3>
+                <div id="resultA"></div>
+            </div>
+
+            <div class="section">
+                <h3 class="red">2팀</h3>
+                <div id="resultB"></div>
+            </div>
+        </div>
+
+        <!-- ⭐ 결과 아래 중앙 -->
+        <div class="btn-area">
+            <button class="copy-btn" onclick="copyResult()">결과 복사</button>
+        </div>
+
     </div>
 
-    <!-- ⭐ 가운데 간격 -->
-    <div class="middle-gap"></div>
-
-    <!-- 결과 1팀 -->
-    <div class="section">
-        <h3 class="blue">1팀</h3>
-        <div id="resultA"></div>
-    </div>
-
-    <!-- 결과 2팀 -->
-    <div class="section">
-        <h3 class="red">2팀</h3>
-        <div id="resultB"></div>
-    </div>
-
-</div>
-
-<!-- 버튼 -->
-<div class="btn-area">
-    <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
-    <button class="copy-btn" onclick="copyResult()">결과 복사</button>
 </div>
 
 <script>
