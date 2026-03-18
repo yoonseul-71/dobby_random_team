@@ -32,10 +32,10 @@ button.active {
     color: white;
 }
 
-/* ⭐ 팀 섞기 버튼 (연하늘색) */
+/* ⭐ 팀 섞기 버튼 (밝은 자두색) */
 .shuffle-btn {
-    background: #a8d8ff;
-    color: #fff;
+    background: #d68fd6;
+    color: white;
     font-weight: bold;
 }
 
@@ -73,7 +73,7 @@ button.active {
     font-size: 15px;
 }
 
-/* 결과칸 (입력칸과 동일 + 배경) */
+/* 결과칸 */
 .result-box {
     display: block;
     width: 150px;
@@ -88,12 +88,11 @@ button.active {
 .blue { color: #2a7cff; font-weight: bold; }
 .red { color: #ff4d4d; font-weight: bold; }
 
-/* 중앙 버튼 */
+/* 버튼 위치 */
 .center-btn {
     margin-top: 20px;
 }
 
-/* 결과 영역 */
 .result-area {
     margin-top: 20px;
 }
@@ -111,7 +110,7 @@ button.active {
 
 <div class="main">
 
-    <!-- 입력 -->
+    <!-- 입력 영역 -->
     <div>
         <div class="input-area">
 
@@ -132,13 +131,22 @@ button.active {
         </div>
     </div>
 
-    <!-- 결과 -->
+    <!-- 결과 영역 -->
     <div>
         <h3>섞인 팀</h3>
 
         <div class="input-area">
-            <div id="resultA"></div>
-            <div id="resultB"></div>
+
+            <div class="section">
+                <h3 class="blue">1팀</h3>
+                <div id="resultA"></div>
+            </div>
+
+            <div class="section">
+                <h3 class="red">2팀</h3>
+                <div id="resultB"></div>
+            </div>
+
         </div>
 
         <div class="result-area">
@@ -171,7 +179,7 @@ function createInputs() {
         a += `<input class="box" id="a${i}">`;
         b += `<input class="box" id="b${i}">`;
 
-        // ⭐ 결과칸도 미리 생성 (빈 상태)
+        // 결과칸 초기 상태 (빈 박스)
         ra += `<div class="result-box"></div>`;
         rb += `<div class="result-box"></div>`;
     }
