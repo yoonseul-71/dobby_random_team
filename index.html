@@ -76,7 +76,7 @@ button.active {
     border: 1px solid #ddd;
 }
 
-/* ⭐ 팀별 결과 색 */
+/* 결과 색 */
 .result-blue {
     background: #e3f0ff;
     color: black;
@@ -142,15 +142,9 @@ function createGrid() {
     document.getElementById("grid").innerHTML = html;
 }
 
-function shuffle(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-}
-
+/* ⭐ 핵심: 2명씩만 섞기 */
 function shuffleTeams() {
-    let names = [];
+    finalText = "";
 
     for (let i = 0; i < size; i++) {
         let a = document.getElementById(`a${i}`).value.trim();
@@ -161,21 +155,18 @@ function shuffleTeams() {
             return;
         }
 
-        names.push(a, b);
-    }
+        // 2명끼리만 랜덤 교환
+        if (Math.random() < 0.5) {
+            document.getElementById(`ra${i}`).innerText = a;
+            document.getElementById(`rb${i}`).innerText = b;
 
-    shuffle(names);
+            finalText += a + "    " + b + "\n";
+        } else {
+            document.getElementById(`ra${i}`).innerText = b;
+            document.getElementById(`rb${i}`).innerText = a;
 
-    let teamA = names.slice(0, size);
-    let teamB = names.slice(size);
-
-    finalText = "";
-
-    for (let i = 0; i < size; i++) {
-        document.getElementById(`ra${i}`).innerText = teamA[i];
-        document.getElementById(`rb${i}`).innerText = teamB[i];
-
-        finalText += teamA[i] + "    " + teamB[i] + "\n";
+            finalText += b + "    " + a + "\n";
+        }
     }
 }
 
