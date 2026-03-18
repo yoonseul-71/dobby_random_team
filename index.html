@@ -32,32 +32,38 @@ button.active {
     color: white;
 }
 
-/* 팀 섞기 버튼 */
+/* 버튼 스타일 */
 .shuffle-btn {
     background: #4da6ff;
     color: white;
     font-weight: bold;
 }
 
-/* 복사 */
 .copy-btn {
     background: #333;
     color: white;
 }
 
-/* ⭐ 핵심: 4열 구조 */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(4, 160px);
+/* ⭐ 전체 레이아웃 */
+.wrapper {
+    display: flex;
     justify-content: center;
-    gap: 12px 30px;
+    align-items: flex-start;
+    gap: 120px; /* ⭐ 가운데 여백 크게 */
     margin-top: 40px;
 }
 
-/* 제목 */
-.title {
-    font-weight: bold;
-    margin-bottom: 5px;
+/* 각 블록 */
+.block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 팀 2개 가로 */
+.team-row {
+    display: flex;
+    gap: 50px;
 }
 
 /* 박스 */
@@ -66,7 +72,7 @@ button.active {
     padding: 12px;
     border-radius: 12px;
     font-size: 15px;
-    margin: 4px 0;
+    margin: 5px 0;
 }
 
 .box {
@@ -97,20 +103,54 @@ button.active {
     <button id="btn6" onclick="setMode(6)">6 vs 6</button>
 </div>
 
-<!-- 제목 라인 -->
-<div class="grid" id="header">
-    <div class="title blue">1팀</div>
-    <div class="title red">2팀</div>
-    <div class="title blue">1팀</div>
-    <div class="title red">2팀</div>
-</div>
+<div class="wrapper">
 
-<!-- 데이터 영역 -->
-<div class="grid" id="grid"></div>
+    <!-- 입력 -->
+    <div class="block">
 
-<div class="btn-area">
-    <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
-    <button class="copy-btn" onclick="copyResult()">결과 복사</button>
+        <div class="team-row">
+            <div>
+                <h3 class="blue">1팀</h3>
+                <div id="teamA"></div>
+            </div>
+
+            <div>
+                <h3 class="red">2팀</h3>
+                <div id="teamB"></div>
+            </div>
+        </div>
+
+        <!-- ⭐ 섞기 버튼 위치 -->
+        <div class="btn-area">
+            <button class="shuffle-btn" onclick="shuffleTeams()">팀 섞기</button>
+        </div>
+
+    </div>
+
+    <!-- 결과 -->
+    <div class="block">
+
+        <h3>섞인 팀</h3>
+
+        <div class="team-row">
+            <div>
+                <h3 class="blue">1팀</h3>
+                <div id="resultA"></div>
+            </div>
+
+            <div>
+                <h3 class="red">2팀</h3>
+                <div id="resultB"></div>
+            </div>
+        </div>
+
+        <!-- ⭐ 복사 버튼 위치 -->
+        <div class="btn-area">
+            <button class="copy-btn" onclick="copyResult()">결과 복사</button>
+        </div>
+
+    </div>
+
 </div>
 
 <script>
@@ -124,20 +164,25 @@ function setMode(n) {
     document.getElementById("btn6").classList.remove("active");
     document.getElementById("btn" + n).classList.add("active");
 
-    createGrid();
+    createInputs();
 }
 
-function createGrid() {
-    let html = "";
+function createInputs() {
+    let a = "", b = "";
+    let ra = "", rb = "";
 
     for (let i = 0; i < size; i++) {
-        html += `<input class="box" id="a${i}">`;
-        html += `<input class="box" id="b${i}">`;
-        html += `<div class="result-box" id="ra${i}"></div>`;
-        html += `<div class="result-box" id="rb${i}"></div>`;
+        a += `<input class="box" id="a${i}">`;
+        b += `<input class="box" id="b${i}">`;
+
+        ra += `<div class="result-box"></div>`;
+        rb += `<div class="result-box"></div>`;
     }
 
-    document.getElementById("grid").innerHTML = html;
+    document.getElementById("teamA").innerHTML = a;
+    document.getElementById("teamB").innerHTML = b;
+    document.getElementById("resultA").innerHTML = ra;
+    document.getElementById("resultB").innerHTML = rb;
 }
 
 function shuffle(arr) {
@@ -167,14 +212,18 @@ function shuffleTeams() {
     let teamA = names.slice(0, size);
     let teamB = names.slice(size);
 
+    let htmlA = "", htmlB = "";
     finalText = "";
 
     for (let i = 0; i < size; i++) {
-        document.getElementById(`ra${i}`).innerHTML = `<span class="blue">${teamA[i]}</span>`;
-        document.getElementById(`rb${i}`).innerHTML = `<span class="red">${teamB[i]}</span>`;
+        htmlA += `<div class="result-box blue">${teamA[i]}</div>`;
+        htmlB += `<div class="result-box red">${teamB[i]}</div>`;
 
         finalText += teamA[i] + "    " + teamB[i] + "\n";
     }
+
+    document.getElementById("resultA").innerHTML = htmlA;
+    document.getElementById("resultB").innerHTML = htmlB;
 }
 
 function copyResult() {
